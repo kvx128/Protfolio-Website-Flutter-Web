@@ -1,15 +1,42 @@
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html' as html;
+// import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:web_app/models/CustomUser.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  uploadImage(path) {
-    Reference firebaseStorageReference =
-        FirebaseStorage.instance.ref().child("profilepics/$path");
+  Future<void> uploadImage(html.File file) async {
+    //File file = File(filePath);
+    if (_auth.currentUser != null) {
+      Reference firebaseStorageReference = FirebaseStorage.instance
+          .ref()
+          .child("profilepics/${_auth.currentUser.uid}.jpg");
+      UploadTask task = firebaseStorageReference.putBlob(
+          //await file.readAsBytes()
+          // await filePath,
+          SettableMetadata(
+        contentType: "image/jpeg",
+        //customMetadata: {"picked-file-path": filePath}
+      ));
+      Future.value(task);
+    }
   }
+
+  // Future<void> uploadFile(html.File file) async {
+  //   try {
+  //     await FirebaseStorage.instance
+  //         .refFromURL("urlFromStorage")
+  //         .child("profilepics/${_auth.currentUser.uid}.jpg")
+  //         .putFile(file);
+  //   } on FirebaseException catch (e) {
+  //     // e.g, e.code == 'canceled'
+  //     print("error: $e");
+  //   }
+  // }
 
   // create user obj based on firebase user
   CustomUser _userFromFirebaseUser(User user) {
@@ -92,10 +119,14 @@ class AuthService {
           email: email, password: password);
       User user = result.user;
       print(user);
-      user.updateDisplayName(displayName);
-      user.updatePhotoURL("");
+      await user.updateDisplayName(displayName);
+      await user.updatePhotoURL(
+          "https://firebasestorage.googleapis.com/v0/b/portfolio-and-blog-website.appspot.com/o/user.png?alt=media&token=cf299478-1449-4959-8a91-9237a301cefe");
       // create a new document for the user with the uid
       //await DatabaseService(uid: user.uid).updateUserData('0','new crew member', 100);
+      await FirebaseFirestore.instance.collection("userData").doc(user.displayName);
+      print(user.displayName);
+      print(user.photoURL);
       return _userFromFirebaseUser(user);
     } catch (error) {
       print(error.toString());

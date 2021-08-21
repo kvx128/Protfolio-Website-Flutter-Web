@@ -3,7 +3,6 @@ import 'package:web_app/components/services/authentication.dart';
 import 'package:web_app/constants.dart';
 import 'package:web_app/home_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:web_app/models/CustomUser.dart';
 

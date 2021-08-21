@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:web_app/components/default_button.dart';
-import 'package:web_app/components/my_outline_button.dart';
 import 'package:web_app/components/section_title.dart';
-import 'package:web_app/models/Article.dart';
 import 'package:web_app/sections/account/components/wrapper.dart';
-import 'package:web_app/sections/blog/components/blank_blog_card.dart';
-import 'package:web_app/sections/blog/components/blog_card.dart';
 
 import '../../constants.dart';
 

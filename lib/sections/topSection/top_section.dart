@@ -11,7 +11,6 @@ import 'package:web_app/sections/recent_work/recent_work_section.dart';
 import 'package:web_app/sections/skills/skills_section.dart';
 
 import 'components/logo_blur_box.dart';
-import 'components/menu.dart';
 import 'components/person_pic.dart';
 
 class TopSection extends StatefulWidget {

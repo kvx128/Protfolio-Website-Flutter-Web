@@ -1,8 +1,8 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:web_app/components/services/authentication.dart';
 import 'package:web_app/models/Article.dart';
 import 'package:web_app/components/services/database.dart';
 
@@ -24,7 +24,8 @@ class _BlankBlogCardState extends State<BlankBlogCard> {
   String body;
   Article newArticle;
   DatabaseService dbs = DatabaseService();
-  AuthService _auth = AuthService();
+  var _currentUser = FirebaseAuth.instance.currentUser.displayName;
+  var _currentUserPic = FirebaseAuth.instance.currentUser.photoURL;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,6 @@ class _BlankBlogCardState extends State<BlankBlogCard> {
             width: 300,
             child: TextFormField(
               keyboardType: TextInputType.multiline,
-              
               onChanged: (value) {
                 setState(() {
                   body = value;
@@ -82,7 +82,7 @@ class _BlankBlogCardState extends State<BlankBlogCard> {
                   border: Border.all(color: Colors.white, width: 10),
                   boxShadow: [if (!isHover) kDefaultCardShadow],
                   image: DecorationImage(
-                    image: AssetImage("assets/images/people.png"),
+                    image: AssetImage("assets/images/user.png"),
                   ),
                 ),
               ),
@@ -109,31 +109,41 @@ class _BlankBlogCardState extends State<BlankBlogCard> {
             ),
             SizedBox(height: kDefaultPadding),
             ElevatedButton(
-                onPressed: (){
-                  print("${colors[Random().nextInt(3)]}");
-                  print(Article(
-                      body: body,
-                      id: 12,
-                      name: "name",
-                      userPic: "pic",
-                      colorCode: colors[Random().nextInt(3)]
-                  ));
-                  dbs.addData(Article(
-                      body: body,
-                      id: 12,
-                      name: "name",
-                      userPic: "pic",
-                      colorCode: colors[Random().nextInt(3)]
-                  ));
+                onPressed: () {
+                  if (body !=null){
+                    // print("${colors[Random().nextInt(3)]}");
+                    // print(Article(
+                    //     body: body,
+                    //     id: 12,
+                    //     name: "name",
+                    //     userPic: "pic",
+                    //     colorCode: colors[Random().nextInt(3)]));
+                    dbs.addData(Article(
+                        body: body,
+                        id: 12,
+                        name: _currentUser,
+                        userPic: _currentUserPic,
+                        colorCode: colors[Random().nextInt(3)]));
+                    dbs.addDataPvt(Article(
+                        body: body,
+                        id: 12,
+                        name: _currentUser,
+                        userPic: _currentUserPic,
+                        colorCode: colors[Random().nextInt(3)]));
+                  }
                 },
-                child: Image.asset("assets/images/add4.png", height: 20,),
-                // child: Icon(Icons.add, 
-                //   color: Color(0xFFFFE0E0),), 
+                child: Image.asset(
+                  "assets/images/add4.png",
+                  height: 20,
+                ),
+                // child: Icon(Icons.add,
+                //   color: Color(0xFFFFE0E0),),
                 style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              padding: EdgeInsets.all(0),
-              primary: Colors.white,
-            )),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    padding: EdgeInsets.all(0),
+                    primary: Colors.white,
+                    elevation: 20)),
             SizedBox(height: kDefaultPadding),
           ],
         ),

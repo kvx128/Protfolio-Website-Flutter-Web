@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:web_app/components/default_button.dart';
 import 'package:web_app/components/section_title.dart';
 import 'package:web_app/components/social_buttons.dart';
 import 'package:web_app/constants.dart';

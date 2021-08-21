@@ -1,11 +1,8 @@
 // ignore: avoid_web_libraries_in_flutter
-import 'dart:html';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:web_app/components/services/authentication.dart';
 import 'package:web_app/components/default_button.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../constants.dart';
 
@@ -17,6 +14,7 @@ class SignedOutUserPage extends StatefulWidget {
 }
 
 class _SignedOutUserPageState extends State<SignedOutUserPage> {
+  // ignore: non_constant_identifier_names
   Widget register_or_signIn = Container();
 
   @override
@@ -206,55 +204,32 @@ class _RegistrationFormState extends State<RegistrationForm> {
   final AuthService _auth = AuthService();
 
   String email, pswd, firstName, lastname;
-  final ImagePicker _picker = ImagePicker();
-  XFile photo;
 
-  Widget userImage = Image.asset("assets/images/people.png");
-
-  void setUserImage(XFile pic) {
-    userImage = (pic != null)
-        ? Image.network(
-            photo.path, //("assets/images/people.png",
-            fit: BoxFit.fill,
-          )
-        : Image.asset(
-            "assets/images/people.png",
-            fit: BoxFit.fill,
-          );
-  }
-
-  uploadImage(){
-    
-  }
+  uploadImage() {}
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        InkWell(
-          onTap: () async {
-            photo = await _picker.pickImage(source: ImageSource.gallery);
-            setState(() {
-              setUserImage(photo);
-            });
-          },
-          child: Container(
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(kDefaultPadding * 4),
-                child: userImage),
-            height: kDefaultPadding * 8,
-            width: kDefaultPadding * 8,
-            decoration: BoxDecoration(
-                // image: DecorationImage(
-                //     image: AssetImage("assets/images/people.png"),
-                //     fit: BoxFit.cover),
-                shape: BoxShape.circle),
-          ),
-        ),
-        SizedBox(
-          height: kDefaultPadding * 4,
-        ),
+        // InkWell(
+        //   onTap: 
+        //   child: Container(
+        //     child: ClipRRect(
+        //         borderRadius: BorderRadius.circular(kDefaultPadding * 4),
+        //         child: userImage),
+        //     height: kDefaultPadding * 8,
+        //     width: kDefaultPadding * 8,
+        //     decoration: BoxDecoration(
+        //         // image: DecorationImage(
+        //         //     image: AssetImage("assets/images/people.png"),
+        //         //     fit: BoxFit.cover),
+        //         shape: BoxShape.circle),
+        //   ),
+        // ),
+        // SizedBox(
+        //   height: kDefaultPadding * 2,
+        // ),
         Form(
           child: Wrap(
             spacing: kDefaultPadding * 2,
@@ -324,8 +299,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     text: "Sign Up!",
                     press: () async {
                       print("$email $pswd \n$firstName $lastname");
-                      dynamic result =
-                          await _auth.registerWithEmailAndPassword(email, pswd, "$firstName $lastname");
+                      dynamic result = await _auth.registerWithEmailAndPassword(
+                          email, pswd, "$firstName $lastname");
                       if (result == null) {
                         print('error signing in');
                       } else {
